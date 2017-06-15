@@ -1,0 +1,7 @@
+#parse("include/init_entity_components.vm")
+// Add the following to "styles": [] in .angular-cli.json
+"../node_modules/material-design-lite/material.min.css"
+
+// Add the following to "scripts": [] in .angular-cli.json
+"../node_modules/material-design-lite/material.min.js",
+"../node_modules/hammerjs/hammer.min.js"

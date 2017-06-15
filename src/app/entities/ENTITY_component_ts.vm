@@ -1,0 +1,39 @@
+#parse("../../../include/entitiesNamesRef.vm")
+import { $baseServiceName } from './services/$fn.uncapitalize($LCentityNameService)';
+import { $entity.name } from './$fn.uncapitalize($LCentityNameModel)';
+import { Component, OnInit } from '@angular/core';
+import { EmitterService } from '../../services/emitter.service';
+
+@Component({
+  selector: 'app-${fn.uncapitalize($entity.name)}',
+  templateUrl: './${fn.uncapitalize($entity.name)}.component.html',
+  styleUrls: ['./${fn.uncapitalize($entity.name)}.component.css'],
+  providers: [${baseServiceName}]
+})
+export class $baseComponentName implements OnInit {
+#set ( $listOfEntities = "listOf" + $entity.name + "s" )
+  private $listOfEntities: ${entity}[];
+
+  // $entity.name list Event tracking ID
+  private listId = '${entity.name}_COMPONENT_LIST';
+
+  constructor(private _$fn.uncapitalize($entity.name)Service: $baseServiceName) { }
+
+  ngOnInit() {
+    // On init get all ${entity.name}s
+    this.getAll${entity.name}s();
+
+    // Listen to the 'list' emitted event so as populate the model with the event payload
+    // Refresh ${entity.name} list
+    EmitterService.get(this.listId).subscribe((data: ${entity.name}[]) => this.getAll${entity.name}s());
+  }
+
+  /**
+     * Get all ${entity.name} using the service $baseServiceName
+     */
+  getAll${entity.name}s = (): void => {
+    this._${fn.uncapitalize($entity.name)}Service.getAll().subscribe(
+      (data: ${entity.name}[]) => this.${listOfEntities} = data,
+      error => console.error(error));
+  }
+}

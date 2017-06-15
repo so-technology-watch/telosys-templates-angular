@@ -1,0 +1,239 @@
+#parse("../../../../include/entitiesNamesRef.vm")
+#set ( $LCentityName = $fn.uncapitalize($entity.name) )
+#set ( $_entityService = "_" + $fn.uncapitalize($baseServiceName) )
+import { $entity.name } from './../$fn.uncapitalize($LCentityNameModel)';
+import { $baseServiceName } from './../services/$fn.uncapitalize($LCentityNameService)';
+import { NotificationService } from './../../../services/notification.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+#set($attrsFKs = [])
+#foreach ($attribute in $entity.attributes)
+#if ($attribute.isFK())
+#if( $attrsFKs.add($attribute.name) )#end
+#set($referencedEntity = $attribute.referencedEntityName)
+import { ${referencedEntity} } from './../../${fn.uncapitalize($referencedEntity)}/${fn.uncapitalize($referencedEntity)}.model';
+import { ${referencedEntity}Service } from './../../${fn.uncapitalize($referencedEntity)}/services/${fn.uncapitalize($referencedEntity)}.service';
+#end
+#end
+
+@Component({
+  selector: 'app-${LCentityName}-form',
+  templateUrl: './${LCentityName}-form.component.html',
+  styleUrls: ['./${LCentityName}-form.component.css']
+})
+export class $formComponentName implements OnInit {
+
+#foreach ( $attrib in $entity.attributes)
+#if ($attrib.isDateType())
+  // Regex for model year, only digits and length = 4
+  readonly YEAR_REGEX = /^[0-9]{4}${DOLLAR}/;
+#end
+#end
+
+  private title = '${entity.name} Form';
+  private $LCentityName: ${entity.name};
+  private form: FormGroup;
+  private ids: any[];
+
+#if ($attrsFKs.size() > 0)
+#foreach ( $entitiesFK in $attrsFKs)
+  // $entitiesFK Select
+  private ${fn.uncapitalize($entitiesFK)}sData: ${entitiesFK}[];
+  private selected${entitiesFK}Id: number;
+
+#end
+#end
+  constructor(
+#if ($attrsFKs.size() > 0)
+#foreach ( $entitiesFK in $attrsFKs)
+    private _${fn.uncapitalize($entitiesFK)}Service: ${entitiesFK}Service,
+#end
+#end
+    private $_entityService: $baseServiceName,
+    private _route: ActivatedRoute,
+    private _router: Router,
+    private _formBuilder: FormBuilder,
+    private _notificationService: NotificationService) { }
+
+  ngOnInit() {
+    this.getIdFromRouteParams();
+#if ($attrsFKs.size() > 0)
+#foreach ( $entitiesFK in $attrsFKs)
+    this.fetch${entitiesFK}s();
+#end
+#end
+    this.initForm();
+  }
+
+  getIdFromRouteParams = () => {
+#if ($entity.keyAttributesCount > 1)
+#foreach ( $attrib in $entity.attributes)
+
+#end
+#end
+    this.id = this._route.snapshot.params['id'];
+    if (typeof this.id === 'string') {
+      this.id = +this.id;
+    }
+  }
+
+#if ($attrsFKs.size() > 0)
+#foreach ( $entitiesFK in $attrsFKs)
+  fetch${entitiesFK}s = () => {
+    this._${fn.uncapitalize($entitiesFK)}Service.getAll().subscribe(
+      (data: ${entitiesFK}[]) => this.${fn.uncapitalize($entitiesFK)}sData = data,
+      error => console.error(error));
+  }
+
+#end
+#end
+  initForm = () => {
+    this.form = this._formBuilder.group(this.getNewForm());
+    if (this.id) {
+      this.load();
+    }
+  }
+
+  getNewForm = (${LCentityName}?: ${entity}) => {
+    return {
+#foreach ( $attrib in $entity.attributes)
+#if ($foreach.count < $entity.attributes.size())
+#if ($attrib.isKeyElement())
+      ${attrib.name}: [{
+        value: (${LCentityName} ? ${LCentityName}.${attrib.name} : ''),
+        disabled: true
+      }],
+#else
+      ${attrib.name}: [
+#set ( $validator = "" )
+#set ( $checkEntity = "(${LCentityName} ? ${LCentityName}.${attrib.name} : '')" )
+#if ($attrib.isNotNull())
+#set ( $checkEntity =  $checkEntity + "," )
+#if ($validator == "")
+#set ( $validator = "Validators.required" )
+#end
+#end
+#if ($attrib.isDateType())
+#set ( $lastChar =  $checkEntity.length() - 1 )
+#if ($checkEntity.substring($lastChar) != "," )
+#set ( $checkEntity =  $checkEntity + "," )
+#end
+#if ($validator == "")
+#set ( $validator = "Validators.pattern(this.YEAR_REGEX)" )
+#else
+#set ( $validator = "Validators.compose([" + $validator + ", Validators.pattern(this.YEAR_REGEX)])" )
+#end
+#end
+        $checkEntity
+#if ($validator != "")
+        $validator
+#end
+      ],
+#end
+#else
+#if ($attrib.isKeyElement())
+      ${attrib.name}: [{
+        value: (${LCentityName} ? ${LCentityName}.${attrib.name} : ''),
+        disabled: true
+      }]
+#else
+      ${attrib.name}: [
+#set ( $validator = "" )
+#set ( $checkEntity = "(${LCentityName} ? ${LCentityName}.${attrib.name} : '')" )
+#if ($attrib.isNotNull())
+#set ( $checkEntity =  $checkEntity + "," )
+#if ($validator == "")
+#set ( $validator = "Validators.required" )
+#end
+#end
+#if ($attrib.isDateType())
+#set ( $lastChar =  $checkEntity.length() - 1 )
+#if ($checkEntity.substring($lastChar) != "," )
+#set ( $checkEntity =  $checkEntity + "," )
+#end
+#if ($validator == "")
+#set ( $validator = "Validators.pattern(this.YEAR_REGEX)" )
+#else
+#set ( $validator = "Validators.compose([" + $validator + ", Validators.pattern(this.YEAR_REGEX)])" )
+#end
+#end
+        $checkEntity
+#if ($validator != "")
+        $validator
+#end
+      ]
+#end
+#end
+#end
+    };
+  }
+
+
+  load = () => {
+    this.${_entityService}.getSingle(this.id).subscribe(
+      ($LCentityName: ${entity.name}) => {
+        this.${LCentityName} = $LCentityName;
+        this.form = this._formBuilder.group(this.getNewForm($LCentityName));
+      },
+      error => {
+        if (error.message) {
+          this._notificationService.error(error.message, 'Couldn\'t find the $LCentityName with the given id');
+        } else {
+          this._notificationService.error('Error', 'An error occured when trying to reach the server');
+        }
+      });
+  }
+
+  save = () => {
+	// If we didn't get a ${LCentityName}, we are adding a ${LCentityName}
+    if (!this.${LCentityName}) {
+      this.add();
+    } else { // If we didn't get a ${LCentityName}, we are adding a ${LCentityName}
+      this.update();
+    }
+  }
+
+  add = () => {
+    this.${_entityService}.add(this.form.value).subscribe(
+      result => {
+        this._notificationService.success('Success', '${entity.name} added successfuly');
+#set( $addVariables = "" )
+#if ($entity.keyAttributesCount > 1)
+#foreach ($keyAttrib in $entity.keyAttributes)
+#if( $foreach.count < $entity.keyAttributes.size() )
+#set( $addVariables = $addVariables + "result.${keyAttrib.name}, " )
+#else
+#set( $addVariables = $addVariables + "result.${keyAttrib.name}" )
+#end
+#end
+#else
+	#set( $addVariables = "result.${entity.keyAttribute.name}" )
+#end
+        this._router.navigate(['./${LCentityName}-form', ${addVariables}]);
+      },
+      error => {
+        if (error.message) {
+          this._notificationService.error(error.message, '');
+        } else {
+          this._notificationService.error('Error', 'An error occured when trying to reach the server');
+        }
+      });
+  }
+
+#set( $updateVariables = "" )
+#foreach ($keyAttrib in $entity.keyAttributes)
+#set( $updateVariables = ${updateVariables} + ", this.${LCentityName}.${keyAttrib.name}" )
+#end
+  update = () => {
+    this.${_entityService}.update(<${entity.name}>this.form.getRawValue()${updateVariables}).subscribe(
+      result => this._notificationService.success('Success', '${entity.name} edited successfuly'),
+      error => {
+        if (error.message) {
+          this._notificationService.error(error.message, '');
+        } else {
+          this._notificationService.error('Error', 'An error occured when trying to reach the server');
+        }
+      });
+  }
+}

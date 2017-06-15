@@ -1,0 +1,5 @@
+<app-${fn.uncapitalize($entity.name)}-list
+#set ( $listOfEntities = "listOf" + $entity.name + "s" )
+    [${listOfEntities}]="${listOfEntities}"
+    [listId]="listId">
+</app-${fn.uncapitalize($entity.name)}-list>

@@ -1,0 +1,201 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+body {
+  background-color: #EEEEEE;
+  min-height: 100vh;
+}
+
+.loadingApp {
+    margin: 0 auto;
+}
+
+/* Car and driver list card css */
+.material-card-wide.mdl-card {
+  width: 70%;
+  margin: 15px auto 15px;
+}
+
+.list-card-body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: rgba(0,0,0,.54);
+    font-size: 1rem;
+}
+
+/* /////////////////////////// */
+
+
+/* Car and driver list table css */
+.data-table-format {
+    width: 75%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+thead {
+    background-color: #8b9dc3;
+    color: white;
+    text-align: center;
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
+}
+
+.data-table-format tr {
+    cursor: pointer;
+}
+
+.data-table-format tr.active th {
+  background-color:#dfe3ee !important;
+}
+
+.data-table-format tr.active td {
+  background-color:#dfe3ee !important;
+}
+
+.loadingCenter {
+  margin: 15px auto 0;
+}
+
+.loadingData {
+  margin: 0 auto;
+  padding-top: 5%;
+  height: 60px;
+  width: 70%;
+}
+
+.material-icons.delete-data-icon {
+    font-size: 20px;
+    color: #ec4039;
+}
+
+/* /////////////////////////// */
+
+
+/* Car and driver form card css */
+.material-card-wide.form-card {
+    width: 50%;
+}
+
+/* /////////////////////////// */
+
+
+/* Common card css */
+.material-card-wide > .mdl-card__title {
+  color: #d9edf7;
+  height: 60px;
+  background-color: #5588ff;
+}
+
+.buttonHolder { 
+    text-align: center;
+}
+
+.buttonHolder button { 
+    font-weight: bold;
+}
+
+/* /////////////////////////// */
+
+
+/* Form css */
+.form-full-width {
+    width: 75%;
+}
+
+.formButton {
+    font-size : 20px; 
+    width: 20%;
+    color: #FFFFFF;
+}
+
+.add-edit-form {
+    margin: auto;
+    width: 90%;
+    padding: 16px;
+}
+/* /////////////////////////// */
+
+/* Pagination css */
+.mdl-paging {
+    margin: 0 auto;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.mdl-paging a {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.mdl-paging > .selected {
+    font-weight: bold;
+    color: #FF4081;
+}
+.paginationStats {
+    
+    color: rgba(0, 0, 0, 0.54);
+}
+/* /////////////////////////// */
+
+/* Form css */
+.mdl-paging {
+    margin: 0 auto;
+}
+
+.mdl-paging a {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.mdl-paging > .selected {
+    font-weight: bold;
+    color: #FF4081;
+}
+
+.mat-input-placeholder {
+    font-size: 1em;
+    color: #555555;
+}
+
+.mat-input-underline {
+    border-color: #555555;
+}
+
+.mat-select-placeholder {
+    font-size: 1em;
+    color: #555555;
+}
+
+.mat-select-underline {
+    background-color: #555555;
+}
+/* /////////////////////////// */
+
+/* Not Found common components */
+.not-found-card-wide.mdl-card {
+  width: 512px;
+  margin: 15px auto 0;
+}
+
+.not-found-card-wide > .mdl-card__title {
+  color: #fff;
+  background-color: #31708f;
+  height: 150px;
+}
+
+.not-found-card-wide > .mdl-card__title > h2 {
+    margin: auto;
+    font-weight: bold;
+    font-size: 70px;
+}
+
+.mdl-card__actions a {
+    font-weight: bold;
+}

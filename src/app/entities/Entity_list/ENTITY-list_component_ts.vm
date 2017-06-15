@@ -1,0 +1,138 @@
+#parse("../../../../include/entitiesNamesRef.vm")
+#set ( $LCentityName = $fn.uncapitalize($entity.name) )
+#set ( $_entityService = "_" + $fn.uncapitalize($baseServiceName) )
+import { PagerService } from './../../../services/pager.service';
+import { EmitterService } from './../../../services/emitter.service';
+import { NotificationService } from './../../../services/notification.service';
+import { Router } from '@angular/router';
+import { $baseServiceName } from './../services/$fn.uncapitalize($LCentityNameService)';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { $entity.name } from '../$fn.uncapitalize($LCentityNameModel)';
+
+@Component({
+  selector: 'app-${LCentityName}-list',
+  templateUrl: './${LCentityName}-list.component.html',
+  styleUrls: ['./${LCentityName}-list.component.css']
+})
+export class $listComponentName implements OnInit, OnChanges {
+
+#set ( $listOfEntities = "listOf" + $entity.name + "s" )
+  @Input() ${listOfEntities}: ${entity}[];
+  @Input() listId: string;
+
+  private title = 'List of ${entity}s';
+  private isLoading: Boolean = true;
+
+  // pager object
+  private pager: any = {};
+  // paged items
+  private pagedItems: any[];
+
+  constructor(
+    private $_entityService: $baseServiceName,
+    private _router: Router,
+    private _notificationService: NotificationService,
+    private pagerService: PagerService) { }
+
+  ngOnInit() { }
+
+  ngOnChanges(...args: any[]) {
+    // if we have a list of $entity.name, set loading to false, otherwise show loading animation
+    if (this.${listOfEntities}) {
+      this.isLoading = false;
+      // initialize to page 1
+      this.setPage(1);
+    }
+  }
+
+  edit${entity.name} = ($LCentityName: ${entity.name}): void => {
+    if ($LCentityName) {
+      // Navigate to $LCentityName form component
+#set( $editVariables = "" )
+#if ($entity.keyAttributesCount > 1)
+#foreach ($keyAttrib in $entity.keyAttributes)
+#if( $foreach.count < $entity.keyAttributes.size() )
+#set( $editVariables = $editVariables + "${LCentityName}.${keyAttrib.name}, " )
+#else
+#set( $editVariables = $editVariables + "${LCentityName}.${keyAttrib.name}" )
+#end
+#end
+#else
+#set( $editVariables = "${LCentityName}.${entity.keyAttribute.name}" )
+#end
+      this.goTo${entity.name}Form(${editVariables});
+    }
+  }
+
+#foreach ($keyAttrib in $entity.keyAttributes)
+#if ( $foreach.count > 1 )
+#set( $notifID = "${DOLLAR}{${LCentityName}ID${foreach.count}}, " )
+#set( $paramID = "${LCentityName}ID${foreach.count}, " )
+#else
+#set( $notifID = "${DOLLAR}{${LCentityName}ID${foreach.count}}" )
+#set( $paramID = "${LCentityName}ID${foreach.count}" )
+#end
+#end
+  delete${entity.name} = (${paramID}): void => {
+    // Call delete service
+    this.${_entityService}.delete(${paramID}).subscribe(
+      result => {
+        // Notify ${entity.name} list to refresh
+        EmitterService.get(this.listId).emit(result);
+
+        this._notificationService.success(
+          'Deleted',
+          `The $LCentityName entry with the id='${notifID}' was deleted successfuly`);
+      },
+      error => {
+        console.error(error);
+        this._notificationService.error(
+          'Error',
+          'An error occured when trying to reach the server');
+      });
+  }
+
+#set( $paramAttrib = "" )
+#set( $routerAtteib = "" )
+#if ($entity.keyAttributesCount > 1)
+#foreach ($keyAttrib in $entity.keyAttributes)
+#if( $foreach.count < $entity.keyAttributes.size() )
+#if ($keyAttrib.inputType == "text" )
+#set( $paramAttrib = $paramAttrib + "id${foreach.count}: string, " )
+#else
+#set( $paramAttrib = $paramAttrib + "id${foreach.count}: ${keyAttrib.inputType}, " )
+#end
+#set( $routerAtteib = $routerAtteib + "id${foreach.count}, " )
+#else
+#if ($keyAttrib.inputType == "text" )
+#set( $paramAttrib = $paramAttrib + "id${foreach.count}: string" )
+#else
+#set( $paramAttrib = $paramAttrib + "id${foreach.count}: ${keyAttrib.inputType}" )
+#end
+#set( $routerAtteib = $routerAtteib + "id${foreach.count}" )
+#end
+#end
+#else
+#if ($entity.keyAttribute.inputType == "text" )
+#set( $paramAttrib = "id: string" )
+#else
+#set( $paramAttrib = "id: ${entity.keyAttribute.inputType}" )
+#end
+#set( $routerAtteib = "id" )
+#end
+  goTo${entity.name}Form($paramAttrib) {
+    this._router.navigate(['./${LCentityName}-form', ${routerAtteib}]);
+  }
+
+  setPage(page: number) {
+    if (page < 1 || page > this.pager.totalPages) {
+      return;
+    }
+
+    // get pager object from service
+    this.pager = this.pagerService.getPager(this.${listOfEntities}.length, page);
+
+    // get current page of items
+    this.pagedItems = this.${listOfEntities}.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
+}

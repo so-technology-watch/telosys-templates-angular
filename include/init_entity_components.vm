@@ -1,0 +1,16 @@
+#macro( importComps $listEntities )
+#foreach ($entity in $listEntities)
+#set ( $baseComponentName = $entity.name + "Component" )
+#set ( $listComponentName = $entity.name + "ListComponent" )
+#set ( $formComponentName = $entity.name + "FormComponent" )
+#set ( $LCentityName = $fn.uncapitalize($entity.name) ) 
+#set ( $baseComponentPath = "./entities/" + $LCentityName + "/" + $LCentityName + ".component" )
+#set ( $listComponentPath = "./entities/" + $LCentityName + "/" + $LCentityName + "-list/" + $LCentityName + "-list.component" )
+#set ( $formComponentPath = "./entities/" + $LCentityName + "/" + $LCentityName + "-form/" + $LCentityName + "-form.component" )
+
+// $entity.name Components
+import { $baseComponentName } from '$baseComponentPath';
+import { $listComponentName } from '$listComponentPath';
+import { $formComponentName } from '$formComponentPath';
+#end 
+#end

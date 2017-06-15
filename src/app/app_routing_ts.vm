@@ -1,0 +1,42 @@
+import { Router, RouterModule } from '@angular/router';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { AboutComponent } from './about/about.component';
+
+#foreach ($entity in $selectedEntities)
+#set ( $baseComponentName = $entity.name + "Component" )
+#set ( $LCentityName = $fn.uncapitalize($entity.name) )
+#set ( $baseComponentPath = "./entities/" + $LCentityName + "/" + $LCentityName + ".component" )
+import { $baseComponentName } from '$baseComponentPath';
+##
+#set ( $formComponentName = $entity.name + "FormComponent" )
+#set ( $formComponentPath = "./entities/" + $LCentityName + "/" + $LCentityName + "-form/" + $LCentityName + "-form.component" )
+import { $formComponentName } from '$formComponentPath';
+#end
+
+export const routing = RouterModule.forRoot([
+    {
+        path: '',
+#set ( $LCfirstEntity = $fn.uncapitalize($selectedEntities[0].name) )
+        redirectTo: '/$LCfirstEntity',
+        pathMatch: 'full'
+    },
+#foreach ($entity in $selectedEntities)
+#set ( $baseComponentName = $entity.name + "Component" )
+#set ( $LCentityName = $fn.uncapitalize($entity.name) )
+#set ( $formComponentName = $entity.name + "FormComponent" )
+#set ( $formPath = $fn.uncapitalize($entity.name) + "-form" )
+    { path: '$LCentityName', component: $baseComponentName },
+#if ($entity.keyAttributesCount > 1)
+#set ( $formPathID = $formPath )
+#foreach ($keyAttrib in $entity.keyAttributes)
+#set( $formPathID = $formPathID + "/:id${foreach.count}" )
+#end
+	{ path: '$formPathID', component: $formComponentName },
+#else
+    { path: '${formPath}/:id', component: $formComponentName },
+#end
+    { path: '$formPath', component: $formComponentName },
+#end
+    { path: 'about', component: AboutComponent },
+    { path: '**', component: NotFoundComponent }
+]);

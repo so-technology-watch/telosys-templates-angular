@@ -1,11 +1,13 @@
+#set($LCentityName = $fn.uncapitalize($entity.name))
 export interface $entity {
 #foreach ( $attrib in $entity.attributes)
+#set($LCattributeName = $fn.uncapitalize($attrib.name))
 #if ( $attrib.type == "int" || $attrib.type == "Integer" || $attrib.type == "BigDecimal" || $attrib.type == "Short" )
-	$fn.uncapitalize($attrib.name): number;
+	${LCentityName}_${LCattributeName}: number;
 #elseif ($attrib.type == "String")
-	$fn.uncapitalize($attrib.name): string;
+	${LCentityName}_${LCattributeName}: string;
 #else
-	$fn.uncapitalize($attrib.name): $attrib.type;
+	${LCentityName}_${LCattributeName}: $attrib.type;
 #end
 #end
 }

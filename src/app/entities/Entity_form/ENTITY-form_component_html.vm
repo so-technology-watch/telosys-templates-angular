@@ -1,3 +1,4 @@
+#set ( $LCentityName = $fn.uncapitalize($entity.name) )
 <div class="material-card-wide mdl-card mdl-shadow--2dp form-card">
   <div class="mdl-card__title mdl-card--border">
     <h2 class="mdl-card__title-text">{{ title }}</h2>
@@ -6,40 +7,63 @@
     <div class="add-edit-form">
       <md-grid-list cols="2" rowHeight="70px">
 #foreach ( $attrib in $entity.attributes)
-#if ($attrib.isKeyElement())
+#if ($attrib.isKeyElement() && !$attrib.isFK())
         <md-grid-tile [colspan]="1" [rowspan]="1">
           <md-input-container class="form-full-width">
-            <input mdInput placeholder="${attrib.name} (disabled)" formControlName="${attrib.name}">
+            <input mdInput placeholder="${attrib.name} (disabled)" formControlName="${LCentityName}_${attrib.name}">
           </md-input-container>
         </md-grid-tile>
 #elseif ($attrib.isDateType())
         <md-grid-tile [colspan]="1" [rowspan]="1">
           <md-input-container class="form-full-width">
-            <input mdInput ${SHARP}${attrib.name} maxlength="4" placeholder="${attrib.name}" required formControlName="${attrib.name}">
-            <md-hint align="end">{{${attrib.name}.value.length}} / 4</md-hint>
-            <md-error *ngIf="form.controls.${attrib.name}.hasError('required')">
+            <input mdInput type="date" placeholder="${attrib.name}" required formControlName="${LCentityName}_${attrib.name}">
+            <md-error *ngIf="form.controls.${LCentityName}_${attrib.name}.hasError('required')">
               ${attrib.name} is required
             </md-error>
-            <md-error *ngIf="form.controls.${attrib.name}.hasError('pattern')">
-              Not a valid year (Only numbers and 4 digits)
-            </md-error>
           </md-input-container>
+        </md-grid-tile>
+#elseif ( $attrib.isFK() && $attrib.isKeyElement())
+#set($referencedEntity = $fn.uncapitalize($attrib.referencedEntityName))
+#set($keyAttrib = $attrib.referencedEntity.keyAttribute.name)
+        <md-grid-tile [colspan]="1" [rowspan]="1">
+          <md-select placeholder="${attrib.referencedEntityName}" formControlName="${LCentityName}_${attrib.name}" name="${referencedEntity}" class="form-full-width">
+            <md-option [value]="">
+              N/A
+            </md-option>
+            <md-option *ngFor="let ${referencedEntity} of ${referencedEntity}sData" [value]="${referencedEntity}.${referencedEntity}_$keyAttrib">
+#foreach ( $refAttrib in $attrib.referencedEntity.attributes)
+#if ($foreach.count < $attrib.referencedEntity.attributes.size())
+#if ($refAttrib.isKeyElement())
+#set($options = "{{ ${referencedEntity}.${referencedEntity}_$keyAttrib }} | ")
+#else
+#set($options = $options + "{{ ${referencedEntity}.${referencedEntity}_${refAttrib.name} }} - ")
+#end
+#else
+#set($options = $options + "{{ ${referencedEntity}.${referencedEntity}_${refAttrib.name} }}")
+#end
+#end
+				$options
+            </md-option>
+          </md-select>
         </md-grid-tile>
 #elseif ( $attrib.isFK() )
 #set($referencedEntity = $fn.uncapitalize($attrib.referencedEntityName))
 #set($keyAttrib = $attrib.referencedEntity.keyAttribute.name)
         <md-grid-tile [colspan]="1" [rowspan]="1">
-          <md-select placeholder="${attrib.referencedEntityName}" formControlName="$attrib.name" name="${referencedEntity}" class="form-full-width">
+          <md-select placeholder="${attrib.referencedEntityName}" formControlName="${LCentityName}_${attrib.name}" name="${referencedEntity}" class="form-full-width">
             <md-option [value]="">
               N/A
             </md-option>
-            <md-option *ngFor="let ${referencedEntity} of ${referencedEntity}sData" [value]="${referencedEntity}.$keyAttrib">
-#set($options = "{{ ${referencedEntity}.$keyAttrib }} | ")
+            <md-option *ngFor="let ${referencedEntity} of ${referencedEntity}sData" [value]="${referencedEntity}.${referencedEntity}_$keyAttrib">
 #foreach ( $refAttrib in $attrib.referencedEntity.attributes)
 #if ($foreach.count < $attrib.referencedEntity.attributes.size())
-#set($options = $options + "{{ ${referencedEntity}.${refAttrib.name} }} - ")
+#if ($refAttrib.isKeyElement())
+#set($options = "{{ ${referencedEntity}.${referencedEntity}_$keyAttrib }} | ")
 #else
-#set($options = $options + "{{ ${referencedEntity}.${refAttrib.name} }}")
+#set($options = $options + "{{ ${referencedEntity}.${referencedEntity}_${refAttrib.name} }} - ")
+#end
+#else
+#set($options = $options + "{{ ${referencedEntity}.${referencedEntity}_${refAttrib.name} }}")
 #end
 #end
 				$options
@@ -49,8 +73,8 @@
 #else
         <md-grid-tile [colspan]="1" [rowspan]="1">
           <md-input-container class="form-full-width">
-            <input mdInput placeholder="${attrib.name}" required formControlName="${attrib.name}">
-            <md-error *ngIf="!form.controls.${attrib.name}.valid">
+            <input mdInput placeholder="${attrib.name}" required formControlName="${LCentityName}_${attrib.name}">
+            <md-error *ngIf="!form.controls.${LCentityName}_${attrib.name}.valid">
               ${attrib.name} is required
             </md-error>
           </md-input-container>

@@ -14,11 +14,24 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let $LCentityName of pagedItems" (click)="edit${entity.name}(${LCentityName})">
-#foreach ( $attrib in $entity.attributes)
-		  <th>{{ ${LCentityName}.${attrib.name} }}</th>
+#set ($editDeleteIds = "")
+#if ($entity.keyAttributesCount > 1)
+#foreach ($primaryFK in $entity.keyAttributes)
+#if ($foreach.count < $entity.keyAttributes.size())
+#set ($editDeleteIds = $editDeleteIds + "${LCentityName}.${LCentityName}_${primaryFK.name}, ")
+#else
+#set ($editDeleteIds = $editDeleteIds + "${LCentityName}.${LCentityName}_${primaryFK.name}")
 #end
-          <td width="5%" (click)="delete${entity.name}(${LCentityName}.${entity.keyAttributesNamesAsString('/')}); ${DOLLAR}event.stopPropagation();">
+#end
+        <tr *ngFor="let $LCentityName of pagedItems" (click)="edit${entity.name}(${editDeleteIds})">
+#else
+#set ($editDeleteIds = "${LCentityName}.${LCentityName}_${entity.keyAttribute.name}")
+        <tr *ngFor="let $LCentityName of pagedItems" (click)="edit${entity.name}(${LCentityName}.${LCentityName}_${entity.keyAttribute.name})">
+#end
+#foreach ( $attrib in $entity.attributes)
+		  <th>{{ ${LCentityName}.${LCentityName}_${attrib.name} }}</th>
+#end
+          <td width="5%" (click)="delete${entity.name}(${editDeleteIds}); ${DOLLAR}event.stopPropagation();">
             <i class="material-icons delete-data-icon">delete_forever</i>
           </td>
         </tr>

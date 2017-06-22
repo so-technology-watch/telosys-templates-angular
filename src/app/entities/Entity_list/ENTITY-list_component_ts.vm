@@ -45,37 +45,29 @@ export class $listComponentName implements OnInit, OnChanges {
     }
   }
 
-  edit${entity.name} = ($LCentityName: ${entity.name}): void => {
-    if ($LCentityName) {
-      // Navigate to $LCentityName form component
-#set( $editVariables = "" )
+#set( $editDeleteVariables = "" )
+#set( $notifID = "" )
 #if ($entity.keyAttributesCount > 1)
 #foreach ($keyAttrib in $entity.keyAttributes)
 #if( $foreach.count < $entity.keyAttributes.size() )
-#set( $editVariables = $editVariables + "${LCentityName}.${keyAttrib.name}, " )
+#set( $editDeleteVariables = $editDeleteVariables + "${LCentityName}ID${foreach.count}, " )
+#set( $notifID = $notifID + "${DOLLAR}{${LCentityName}ID${foreach.count}}, " )
 #else
-#set( $editVariables = $editVariables + "${LCentityName}.${keyAttrib.name}" )
+#set( $editDeleteVariables = $editDeleteVariables + "${LCentityName}ID${foreach.count}" )
+#set( $notifID = $notifID + "${DOLLAR}{${LCentityName}ID${foreach.count}}," )
 #end
 #end
 #else
-#set( $editVariables = "${LCentityName}.${entity.keyAttribute.name}" )
+#set( $editDeleteVariables = "${LCentityName}ID" )
 #end
-      this.goTo${entity.name}Form(${editVariables});
-    }
+  edit${entity.name} = ($editDeleteVariables): void => {
+    // Navigate to $LCentityName form component
+    this.goTo${entity.name}Form(${editDeleteVariables});
   }
 
-#foreach ($keyAttrib in $entity.keyAttributes)
-#if ( $foreach.count > 1 )
-#set( $notifID = "${DOLLAR}{${LCentityName}ID${foreach.count}}, " )
-#set( $paramID = "${LCentityName}ID${foreach.count}, " )
-#else
-#set( $notifID = "${DOLLAR}{${LCentityName}ID${foreach.count}}" )
-#set( $paramID = "${LCentityName}ID${foreach.count}" )
-#end
-#end
-  delete${entity.name} = (${paramID}): void => {
+  delete${entity.name} = (${editDeleteVariables}): void => {
     // Call delete service
-    this.${_entityService}.delete(${paramID}).subscribe(
+    this.${_entityService}.delete(${editDeleteVariables}).subscribe(
       result => {
         // Notify ${entity.name} list to refresh
         EmitterService.get(this.listId).emit(result);

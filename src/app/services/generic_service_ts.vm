@@ -35,7 +35,7 @@ export abstract class GenericService<T> {
      * @param t Object to update
      * @return promise
      */
-    public getSingle = (...keys: any[]): Observable<T> => {
+    public getSingle = (keys: any[]): Observable<T> => {
         return this._http.get(this.actionUrl + this.getKeysUrl(keys))
             .map((response: Response) => response.json() as T)
             .catch(this.handleError);
@@ -48,7 +48,7 @@ export abstract class GenericService<T> {
      * @return promise
      */
     public add = (newT: T): Observable<T> => {
-        return this._http.post(this.actionUrl + 'create', JSON.stringify(newT), { headers: this.headers })
+        return this._http.post(this.actionUrl, JSON.stringify(newT), { headers: this.headers })
             .map((response: Response) => response.json())
             .catch(this.handleError);
     }
@@ -59,8 +59,8 @@ export abstract class GenericService<T> {
      * @param keys Can take many Identifiers
      * @return promise
      */
-    public update = (t: T, ...keys: any[]): Observable<T> => {
-        return this._http.put(this.actionUrl + this.getKeysUrl(keys), JSON.stringify(t), { headers: this.headers })
+    public update = (t: T): Observable<T> => {
+        return this._http.put(this.actionUrl, JSON.stringify(t), { headers: this.headers })
             .catch(this.handleError);
     }
 

@@ -102,23 +102,77 @@ export class Configuration {
 You will be able to change your server url as well as the url suffix (if needed).
 
 ## Dependencies used
-
-* [Angular CLI](https://github.com/angular/angular-cli) :
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-![version](https://img.shields.io/badge/version-1.1.2-brightgreen.svg)
-<br>The Angular CLI makes it easy to create an application that already works, right out of the box
-* [Material2](https://material.angular.io/) : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-![version](https://img.shields.io/badge/version-2.0.0.beta.7-brightgreen.svg)
-<br> Official Material Design components built for and with Angular.
-* [Material Design Lite](https://getmdl.io/) :
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-![version](https://img.shields.io/badge/version-1.3.0-brightgreen.svg)
- <br/> Material Design Lite lets you add a Material Design look and feel to your websites. It doesn’t rely on any JavaScript frameworks and aims to optimize for cross-device use, gracefully degrade in older browsers, and offer an experience that is immediately accessible
-* [Angular2-Notifications](https://github.com/flauc/angular2-notifications) :
-&nbsp;&nbsp;
-![version](https://img.shields.io/badge/version-0.7.3-brightgreen.svg)
- <br/> A light and easy to use notifications library for Angular 2. It features both regular page notifications (toasts) and push notifications.
- * [Underscorejs](http://http://underscorejs.org/) :
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-![version](https://img.shields.io/badge/version-1.8.3-brightgreen.svg)
- <br/> Underscore is a JavaScript library that provides a whole mess of useful functional programming helpers without extending any built-in objects.
+ 
+ <table>
+  <tbody>
+    <tr>
+      <th align="center">Dependencies</th>
+      <th align="center">Version</th>
+    </tr>
+    <tr>
+      <td>
+      <a href="https://github.com/angular/angular-cli">Angular CLI</a>
+      </td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/version-1.1.2-brightgreen.svg" />
+      </td>
+    </tr>
+    <tr>
+    	<td colspan="2">
+        	The Angular CLI makes it easy to create an application that already works, right out of the box
+        </td>
+    </tr>
+    <tr>
+      <td>
+      <a href="https://material.angular.io/">Material 2</a>
+      </td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/version-2.0.0.beta.7-brightgreen.svg" />
+      </td>
+    </tr>
+    <tr>
+    	<td colspan="2">
+        	Official Material Design components built for and with Angular.
+        </td>
+    </tr>
+    <tr>
+      <td>
+      <a href="https://getmdl.io/">Material Design Lite</a>
+      </td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/version-1.3.0-brightgreen.svg" />
+      </td>
+    </tr>
+    <tr>
+    	<td colspan="2">
+        	Material Design Lite lets you add a Material Design look and feel to your websites. It doesn’t rely on any JavaScript frameworks and aims to optimize for cross-device use, gracefully degrade in older browsers, and offer an experience that is immediately accessible
+        </td>
+    </tr>
+    <tr>
+      <td>
+      <a href="https://github.com/flauc/angular2-notifications">Angular2-Notifications</a>
+      </td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/version-0.7.3-brightgreen.svg" />
+      </td>
+    </tr>
+    <tr>
+    	<td colspan="2">
+        	A light and easy to use notifications library for Angular 2. It features both regular page notifications (toasts) and push notifications.
+        </td>
+    </tr>
+    <tr>
+      <td>
+      <a href="http://http//underscorejs.org/">Underscorejs</a>
+      </td>
+      <td align="center">
+        <img src="https://img.shields.io/badge/version-1.8.3-brightgreen.svg" />
+      </td>
+    </tr>
+    <tr>
+    	<td colspan="2">
+        	Underscore is a JavaScript library that provides a whole mess of useful functional programming helpers without extending any built-in objects.
+        </td>
+    </tr>
+  </tbody>
+</table>

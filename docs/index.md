@@ -1,10 +1,10 @@
-# Angular4 - Telosys 3 Template
+﻿# Angular4 - Telosys 3 Template
 
 This template is used by [Telosys](http://www.telosys.org/) to generate an Angular web app using basic RESTful API services based on the NodeJS server template [here](https://github.com/so-technology-watch/telosys-templates-nodejs).
 
 ## Prerequisites
 
-You need to have Angular CLI installed. For further info, refer to the [project GitHub](https://github.com/angular/angular-cli).
+You need to have Angular CLI installed. For further info, refer to the [GitHub project](https://github.com/angular/angular-cli).
 
 The Angular CLI version used in the template is v1.1.2
 
@@ -22,7 +22,7 @@ Refer to [Telosys Online Documentation](https://sites.google.com/site/telosystoo
 
 ## Template Configuration
 
-Let's assume you already have created your own project with Angular CLI and you want to generate the template.
+Let's assume you have already created your own project with Angular CLI and you want to generate the template.
 
 *In case you didn't yet created a project, refer to [Angular CLI documentation](https://github.com/angular/angular-cli#generating-and-serving-an-angular-project-via-a-development-server) to see how to create one*
 

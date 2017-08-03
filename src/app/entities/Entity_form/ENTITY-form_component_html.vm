@@ -18,11 +18,13 @@
 #elseif ($attrib.isDateType())
         <md-grid-tile [colspan]="1" [rowspan]="1">
           <md-input-container class="form-full-width">
-            <input mdInput type="date" placeholder="${attrib.name}" required formControlName="${LCentityName}_${attrib.name}">
+			<input mdInput [mdDatepicker]="picker" placeholder="${attrib.name}" required formControlName="${LCentityName}_${attrib.name}">
+            <button mdSuffix [mdDatepickerToggle]="picker"></button>
             <md-error *ngIf="form.controls.${LCentityName}_${attrib.name}.hasError('required')">
               ${attrib.name} is required
             </md-error>
           </md-input-container>
+		  <md-datepicker #picker></md-datepicker>
         </md-grid-tile>
 #elseif ( $attrib.isFK() && $attrib.isKeyElement())
 #set($referencedEntity = $fn.uncapitalize($attrib.referencedEntityName))
@@ -86,14 +88,17 @@
       </md-grid-list>
     </div>
     <div class="mdl-card__actions mdl-card--border">
-      <div class="buttonHolder">
+      <div class="card-footer-button">
         <button type="submit" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary" [disabled]="!form.valid">
-        Save
-      </button>
+          Save
+        </button>
         <button type="button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent" (click)="initForm()">
-        Reset
-      </button>
+          Reset
+        </button>
       </div>
     </div>
   </form>
+  <div class="mdl-card__menu">
+    <a md-raised-button class="card-header-button" routerLink="../${LCentityName}">${entity.name} list</a>
+  </div>
 </div>

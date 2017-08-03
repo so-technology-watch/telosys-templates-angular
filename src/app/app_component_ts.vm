@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
 
-  title: String = 'SO-Angular4-ts';
+  title: String = 'Home';
 
   public navigation = [
 #foreach ($entity in $selectedEntities)
@@ -27,8 +27,8 @@ export class AppComponent implements OnInit {
     position: ['bottom', 'left'],
     timeOut: 5000,
     lastOnBottom: true,
-    showProgressBar: true,
-    pauseOnHover: true,
+    showProgressBar: false,
+    pauseOnHover: false,
     clickToClose: true,
     preventDuplicates: true
   };

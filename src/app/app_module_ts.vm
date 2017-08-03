@@ -14,11 +14,13 @@ import { routing } from './app.routing';
 // Other Components
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AboutComponent } from './about/about.component';
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { HomeListComponent } from './home-list/home-list.component';
 
 // Modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SimpleNotificationsModule } from 'angular2-notifications';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule, MdNativeDateModule } from '@angular/material';
 
 // Services
 import { Configuration } from './app.configuration';
@@ -41,7 +43,12 @@ import { PagerService } from './services/pager.service';
 	${entity.name}FormComponent,
 #end 
     NotFoundComponent,
-    AboutComponent
+    AboutComponent,
+	DeleteDialogComponent,
+	HomeListComponent
+],
+  entryComponents: [
+    DeleteDialogComponent
 ],
   imports: [
     BrowserModule,
@@ -51,8 +58,9 @@ import { PagerService } from './services/pager.service';
     routing,
     BrowserAnimationsModule,
     MaterialModule,
+	MdNativeDateModule,
     SimpleNotificationsModule.forRoot()
-  ],
+],
   providers: [
 #foreach ($entity in $selectedEntities)
     ${entity.name}Service,
@@ -61,7 +69,7 @@ import { PagerService } from './services/pager.service';
     EmitterService,
     NotificationService,
     PagerService
-  ],
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -33,15 +33,12 @@
 #foreach ( $attrib in $entity.attributes)
 		  <th>{{ ${LCentityName}.${LCentityName}_${attrib.name} }}</th>
 #end
-          <td width="5%" (click)="delete${entity.name}(${editDeleteIds}); ${DOLLAR}event.stopPropagation();">
+          <td width="5%" (click)="deleteConfirmation(${editDeleteIds}); ${DOLLAR}event.stopPropagation();">
             <i class="material-icons delete-data-icon">delete_forever</i>
           </td>
         </tr>
       </tbody>
     </table>
-    <section *ngIf="isLoading" class="loadingData">
-      <md-progress-bar class="loadingMargin" mode="query"></md-progress-bar>
-    </section>
   </div>
 
   <!-- pager -->
@@ -65,11 +62,7 @@
     <br />
     <span class="paginationStats">Pages {{ pager.startPage }}-{{ this.pager.endPage }} of {{ pager.totalPages }}</span>
   </div>
-  <div class="mdl-card__actions mdl-card--border">
-    <div class="buttonHolder">
-      <button routerLink="../${LCentityName}-form" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary" *ngIf="!editing">
-        Add
-      </button>
-    </div>
+  <div class="mdl-card__menu">
+    <a md-raised-button class="card-header-button" routerLink="../${LCentityName}-form"><md-icon>add</md-icon>Add</a>
   </div>
 </div>

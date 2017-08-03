@@ -11,6 +11,11 @@ body {
     margin: 0 auto;
 }
 
+.home-list-entities {
+  position: absolute;
+  left: 5px;
+}
+
 /* Car and driver list card css */
 .material-card-wide.mdl-card {
   width: 70%;
@@ -34,17 +39,17 @@ body {
     border-collapse: collapse;
 }
 
-tr:nth-child(even) {
+.data-table-format tr:nth-child(even) {
     background-color: #f2f2f2
 }
 
-thead {
+.data-table-format thead {
     background-color: #8b9dc3;
     color: white;
     text-align: center;
 }
 
-th, td {
+.data-table-format th, td {
     text-align: center;
     padding: 8px;
 }
@@ -95,12 +100,23 @@ th, td {
   background-color: #5588ff;
 }
 
-.buttonHolder { 
-    text-align: center;
+.nav-home-title {
+    font-size: 23px!important;
+    padding-left: 5px!important;
+    outline: none;
 }
 
-.buttonHolder button { 
+.card-footer-button {
+	text-align: center;
+}
+
+.card-footer-button button { 
     font-weight: bold;
+}
+
+.mdl-card__menu .card-header-button {
+    font-weight: bold;
+    color: #3F51B5!important;
 }
 
 /* /////////////////////////// */
